@@ -13,28 +13,6 @@ export const portfolioContent: PortfolioContent = {
       { label: "Site", href: "https://ehza.me" },
       { label: "Repo", href: "https://github.com/ehzawad/portfolio" },
     ],
-    stats: [
-      {
-        label: "Public repos",
-        value: "542",
-        detail: "GitHub profile total",
-      },
-      {
-        label: "Authored public",
-        value: "188",
-        detail: "Public, non-fork repositories",
-      },
-      {
-        label: "Recent authored",
-        value: "74",
-        detail: "Updated since 2025",
-      },
-      {
-        label: "AI-heavy repos",
-        value: "49",
-        detail: "LLM, agent, RAG, CV, or ML signal",
-      },
-    ],
   },
   focusAreas: [
     "LLM application systems",
@@ -101,7 +79,6 @@ export const portfolioContent: PortfolioContent = {
       evidence:
         "Public authored repo described as a domain-agnostic core with banking implementation, pushed April 2026.",
       tags: ["agentic chatbot", "B2B", "banking", "Python"],
-      impact: 96,
     },
     {
       id: "deterministic-b2b",
@@ -116,7 +93,6 @@ export const portfolioContent: PortfolioContent = {
       evidence:
         "Public authored repo combining deterministic retrieval and generative behavior for any domain.",
       tags: ["LLAMA", "FAISS", "Qwen", "domain QA"],
-      impact: 92,
     },
     {
       id: "mini-agentic-rag",
@@ -129,9 +105,8 @@ export const portfolioContent: PortfolioContent = {
       description:
         "Compact agentic RAG exploration for domain knowledge question answering.",
       evidence:
-        "Public authored repo with a sizeable code footprint and recent RAG-focused naming signal.",
+        "Public authored repo with a sizeable code footprint and recent RAG-focused naming.",
       tags: ["RAG", "domain knowledge", "QA", "agents"],
-      impact: 86,
     },
     {
       id: "slim-langgraph",
@@ -146,7 +121,6 @@ export const portfolioContent: PortfolioContent = {
       evidence:
         "Public authored repo pushed December 2025, aligned with graph-based agent orchestration.",
       tags: ["LangGraph", "agent flow", "Python"],
-      impact: 78,
     },
     {
       id: "codex-chronicle",
@@ -161,7 +135,6 @@ export const portfolioContent: PortfolioContent = {
       evidence:
         "Public authored repo with Codex and GPT topics, pushed April 2026.",
       tags: ["Codex", "memory", "session history", "CLI"],
-      impact: 98,
     },
     {
       id: "claude-opinion",
@@ -176,7 +149,6 @@ export const portfolioContent: PortfolioContent = {
       evidence:
         "Public authored repo with Claude Code and Codex skill topics, pushed April 2026.",
       tags: ["Claude Code", "Codex", "skills", "review"],
-      impact: 94,
     },
     {
       id: "codex-opinion",
@@ -189,9 +161,8 @@ export const portfolioContent: PortfolioContent = {
       description:
         "Claude Code skill that asks OpenAI Codex for review and delegation support.",
       evidence:
-        "Public authored repo with one star and Claude/Codex skill positioning.",
+        "Public authored repo positioned around Claude/Codex review loops.",
       tags: ["multi-agent review", "CLI", "skills"],
-      impact: 90,
     },
     {
       id: "system-prompt",
@@ -206,7 +177,6 @@ export const portfolioContent: PortfolioContent = {
       evidence:
         "Public authored repo updated April 2026 and used as a visible workflow artifact.",
       tags: ["prompting", "workflow", "LLM ops"],
-      impact: 72,
     },
     {
       id: "bengali-whisper",
@@ -221,7 +191,6 @@ export const portfolioContent: PortfolioContent = {
       evidence:
         "Public authored repo specifically targeting Bengali ASR deployment efficiency.",
       tags: ["Bengali", "Whisper", "CTranslate2", "ASR"],
-      impact: 95,
     },
     {
       id: "ec-faq-benchmark",
@@ -234,9 +203,8 @@ export const portfolioContent: PortfolioContent = {
       description:
         "SLM reranker benchmark across 7 models and 1,128 Bengali FAQ questions on a T4 GPU.",
       evidence:
-        "Public authored benchmark repo with explicit model count, dataset size, and hardware signal.",
+        "Public authored benchmark repo with explicit model count, dataset size, and hardware context.",
       tags: ["Bengali FAQ", "reranking", "T4", "SLM"],
-      impact: 93,
     },
     {
       id: "land-service-classifier",
@@ -251,7 +219,6 @@ export const portfolioContent: PortfolioContent = {
       evidence:
         "Public authored repo with a precise description around intent classification and analysis.",
       tags: ["Bengali", "EmbeddingGemma", "classifier", "intent"],
-      impact: 90,
     },
     {
       id: "fine-tune-gemma",
@@ -264,9 +231,8 @@ export const portfolioContent: PortfolioContent = {
       description:
         "Fine-tuning experiments around triplet data for Gemma embedding models.",
       evidence:
-        "Public authored repo with one star and embedding fine-tuning focus.",
+        "Public authored repo focused on embedding fine-tuning experiments.",
       tags: ["Gemma", "embeddings", "fine-tuning"],
-      impact: 84,
     },
     {
       id: "flexbone",
@@ -281,7 +247,6 @@ export const portfolioContent: PortfolioContent = {
       evidence:
         "Public authored repo with production-oriented OCR service description.",
       tags: ["OCR", "Google Cloud Vision", "batching", "cache"],
-      impact: 89,
     },
     {
       id: "uncertainty-jnr",
@@ -296,7 +261,6 @@ export const portfolioContent: PortfolioContent = {
       evidence:
         "Public authored computer vision repo pushed March 2026.",
       tags: ["computer vision", "uncertainty", "sports video"],
-      impact: 86,
     },
     {
       id: "cuda-mastery",
@@ -311,7 +275,6 @@ export const portfolioContent: PortfolioContent = {
       evidence:
         "Public authored course built for Tesla T4 and CUDA 12.8.",
       tags: ["CUDA", "GPU", "parallel algorithms", "T4"],
-      impact: 91,
     },
     {
       id: "triton-vs-cuda",
@@ -326,7 +289,6 @@ export const portfolioContent: PortfolioContent = {
       evidence:
         "Public authored repo designed to make GPU tradeoffs concrete.",
       tags: ["Triton", "CUDA", "benchmarks", "GPU"],
-      impact: 88,
     },
     {
       id: "whisper-optimization",
@@ -341,7 +303,6 @@ export const portfolioContent: PortfolioContent = {
       evidence:
         "Public authored repo with a large code/data footprint and recent pushes.",
       tags: ["Whisper", "optimization", "deployment"],
-      impact: 87,
     },
     {
       id: "teamagents",
@@ -356,7 +317,6 @@ export const portfolioContent: PortfolioContent = {
       evidence:
         "Public authored full-stack app with a modern TypeScript and Bun stack.",
       tags: ["React", "Bun", "SQLite", "JWT"],
-      impact: 80,
     },
     {
       id: "resume-pick",
@@ -371,7 +331,6 @@ export const portfolioContent: PortfolioContent = {
       evidence:
         "Public authored Python repo with a sizeable footprint and recent update history.",
       tags: ["resume", "documents", "automation"],
-      impact: 76,
     },
     {
       id: "tahoe-player",
@@ -386,7 +345,6 @@ export const portfolioContent: PortfolioContent = {
       evidence:
         "Public authored Swift repo showing product UI work outside the AI stack.",
       tags: ["SwiftUI", "macOS", "media"],
-      impact: 70,
     },
   ],
 };

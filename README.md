@@ -25,13 +25,8 @@ Production base path is `/portfolio/`, so the site is ready for:
 https://ehzawad.github.io/portfolio/
 ```
 
-## Dynamic Content
+## Live GitHub Metadata
 
-Static TypeScript data is the default source. To switch to Firestore later:
+Curated project copy lives in `src/data/portfolio.ts`. Stars, forks, pushed dates, profile totals, and repo descriptions are refreshed in the browser from the public GitHub API and cached locally. If GitHub rate-limits or the visitor is offline, the UI falls back to `src/data/githubSnapshot.ts`.
 
-1. Copy `.env.example` to `.env.local`.
-2. Set `VITE_CONTENT_SOURCE=firebase`.
-3. Fill the Firebase web app values.
-4. Create Firestore collection `portfolio`, document `live`, with the same shape as `src/types.ts`.
-
-See [docs/FIREBASE.md](docs/FIREBASE.md).
+The app makes one aggregated repo-list request per refresh, plus detail requests only for featured repos missing from the first page.

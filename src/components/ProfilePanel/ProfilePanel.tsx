@@ -1,18 +1,62 @@
-import { ExternalLink, GitBranch, MapPin } from "lucide-react";
-import type { Profile } from "../../types";
+import { ExternalLink, GitBranch, MapPin, RefreshCw } from "lucide-react";
+import type {
+  GitHubLoadStatus,
+  GitHubPortfolioSnapshot,
+  Profile,
+} from "../../types";
+import { formatCompactNumber, formatDateTime } from "../../utils/format";
 
 interface ProfilePanelProps {
   profile: Profile;
-  source: "static" | "firebase";
-  warning?: string;
+  githubSnapshot: GitHubPortfolioSnapshot;
+  githubStatus: GitHubLoadStatus;
+  onRefreshGitHub: () => void;
 }
 
-export function ProfilePanel({ profile, source, warning }: ProfilePanelProps) {
+function getSourceLabel(snapshot: GitHubPortfolioSnapshot, status: GitHubLoadStatus) {
+  if (status === "loading") {
+    return "Refreshing GitHub API";
+  }
+
+  if (snapshot.source === "github") {
+    return "GitHub API live";
+  }
+
+  if (snapshot.source === "cache") {
+    return "Local GitHub cache";
+  }
+
+  if (snapshot.source === "snapshot") {
+    return "Bundled GitHub snapshot";
+  }
+
+  return "Static fallback";
+}
+
+export function ProfilePanel({
+  profile,
+  githubSnapshot,
+  githubStatus,
+  onRefreshGitHub,
+}: ProfilePanelProps) {
+  const avatarUrl = githubSnapshot.profile?.avatarUrl ?? profile.avatarUrl;
+  const repoMetrics = Object.values(githubSnapshot.repos);
+  const loadedRepoMetrics = repoMetrics.filter((repo) => repo.source !== "fallback");
+  const featuredStars = loadedRepoMetrics.reduce((total, repo) => total + (repo.stars ?? 0), 0);
+  const featuredForks = loadedRepoMetrics.reduce((total, repo) => total + (repo.forks ?? 0), 0);
+  const warning = githubSnapshot.warning;
+
   return (
     <section className="profile-panel" aria-labelledby="profile-title">
       <div className="profile-copy">
         <div className="identity-row">
-          <img src={profile.avatarUrl} alt="GitHub avatar for ehzawad" className="avatar" />
+          <img
+            src={avatarUrl}
+            alt="GitHub avatar for ehzawad"
+            className="avatar"
+            width="80"
+            height="80"
+          />
           <div>
             <p className="eyebrow">AI systems portfolio</p>
             <h1 id="profile-title">{profile.name}</h1>
@@ -29,8 +73,16 @@ export function ProfilePanel({ profile, source, warning }: ProfilePanelProps) {
             <MapPin aria-hidden="true" size={17} />
             {profile.location}
           </span>
-          <span>Data source: {source}</span>
-          {warning ? <span role="status">Static fallback active</span> : null}
+          <span role="status">{getSourceLabel(githubSnapshot, githubStatus)}</span>
+          {warning ? <span role="status">{warning}</span> : null}
+        </div>
+
+        <div className="live-summary" aria-label="Live GitHub summary">
+          <span>{formatCompactNumber(githubSnapshot.profile?.publicRepos)} public repos</span>
+          <span>{formatCompactNumber(repoMetrics.length)} featured here</span>
+          <span>{formatCompactNumber(featuredStars)} stars</span>
+          <span>{formatCompactNumber(featuredForks)} forks</span>
+          <span>Updated {formatDateTime(githubSnapshot.fetchedAt)}</span>
         </div>
 
         <div className="profile-actions" aria-label="Profile links">
@@ -44,17 +96,16 @@ export function ProfilePanel({ profile, source, warning }: ProfilePanelProps) {
               </a>
             );
           })}
+          <button
+            type="button"
+            className="refresh-button"
+            onClick={onRefreshGitHub}
+            disabled={githubStatus === "loading"}
+          >
+            <RefreshCw aria-hidden="true" size={18} />
+            {githubStatus === "loading" ? "Refreshing" : "Refresh GitHub"}
+          </button>
         </div>
-      </div>
-
-      <div className="metric-grid" aria-label="GitHub portfolio metrics">
-        {profile.stats.map((stat) => (
-          <article className="metric-tile" key={stat.label}>
-            <p>{stat.label}</p>
-            <strong>{stat.value}</strong>
-            <span>{stat.detail}</span>
-          </article>
-        ))}
       </div>
     </section>
   );

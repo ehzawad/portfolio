@@ -7,7 +7,7 @@
   --surface-3: #24292e;
   --text: #f4f4f1;
   --muted: #aab0b6;
-  --subtle: #737b84;
+  --subtle: #8d96a0;
   --line: rgba(255, 255, 255, 0.12);
   --line-strong: rgba(255, 255, 255, 0.2);
   --green: #d8f87a;
@@ -107,10 +107,15 @@ a:focus-visible {
 
 .topbar {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-columns: auto auto;
+  justify-content: space-between;
   align-items: center;
   gap: 1rem;
   min-height: 4rem;
+}
+
+.topbar > * {
+  min-width: 0;
 }
 
 .brand-mark {
@@ -126,7 +131,7 @@ a:focus-visible {
   text-decoration: none;
 }
 
-.topbar p,
+.topbar-status,
 .bio,
 .focus-strip li,
 .project-card p,
@@ -136,9 +141,19 @@ a:focus-visible {
   line-height: 1.65;
 }
 
-.topbar p {
-  margin: 0;
+.topbar-status {
+  display: inline-flex;
+  align-items: center;
+  justify-self: end;
+  max-width: 100%;
+  min-height: 2.2rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.35rem 0.8rem;
+  background: rgba(255, 255, 255, 0.035);
   font-size: 0.95rem;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
 }
 
 main {
@@ -147,23 +162,19 @@ main {
 }
 
 .profile-panel {
-  display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
-  gap: 1rem;
-  align-items: stretch;
-  min-height: 430px;
+  min-height: 0;
 }
 
 .profile-copy,
-.metric-tile,
 .focus-strip,
-.signal-map,
+.repo-console,
 .project-card,
 .empty-state {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: rgba(15, 17, 19, 0.72);
   box-shadow: 0 22px 70px var(--shadow);
+  -webkit-backdrop-filter: blur(18px);
   backdrop-filter: blur(18px);
 }
 
@@ -260,11 +271,32 @@ h3 {
   gap: 0.4rem;
 }
 
+.live-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1.25rem;
+}
+
+.live-summary span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+  border: 1px solid rgba(118, 215, 200, 0.22);
+  border-radius: 999px;
+  padding: 0 0.7rem;
+  background: rgba(118, 215, 200, 0.055);
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
 .profile-actions {
   margin-top: 1.5rem;
 }
 
 .profile-actions a,
+.refresh-button,
 .inline-link {
   display: inline-flex;
   align-items: center;
@@ -276,46 +308,25 @@ h3 {
   padding: 0 0.95rem;
   background: rgba(255, 255, 255, 0.055);
   color: var(--text);
+  font: inherit;
   font-weight: 800;
   text-decoration: none;
 }
 
 .profile-actions a:hover,
+.refresh-button:hover:not(:disabled),
 .inline-link:hover {
   border-color: rgba(216, 248, 122, 0.55);
   background: rgba(216, 248, 122, 0.11);
 }
 
-.metric-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
+.refresh-button {
+  cursor: pointer;
 }
 
-.metric-tile {
-  display: flex;
-  min-height: 12rem;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 1.25rem;
-}
-
-.metric-tile p {
-  margin: 0;
-  color: var(--muted);
-  font-weight: 700;
-}
-
-.metric-tile strong {
-  color: var(--text);
-  font-size: 2.4rem;
-  line-height: 1;
-}
-
-.metric-tile span {
-  color: var(--subtle);
-  font-size: 0.88rem;
-  line-height: 1.45;
+.refresh-button:disabled {
+  cursor: wait;
+  opacity: 0.62;
 }
 
 .category-rail {
@@ -394,13 +405,13 @@ h3 {
   flex: 0 0 auto;
 }
 
-.signal-map,
+.repo-console,
 .project-section {
   display: grid;
   gap: 1rem;
 }
 
-.signal-map {
+.repo-console {
   padding: 1.35rem;
 }
 
@@ -417,40 +428,41 @@ h3 {
   font-weight: 800;
 }
 
-.signal-layout {
+.repo-console-layout {
   display: grid;
   grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
   gap: 1rem;
 }
 
-.node-grid {
+.repo-feed {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 0.75rem;
+  align-content: start;
+  gap: 0.6rem;
+  max-height: 34rem;
   min-height: 24rem;
+  overflow: auto;
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: 1rem;
   background:
-    linear-gradient(135deg, rgba(216, 248, 122, 0.08), transparent 28%),
-    linear-gradient(315deg, rgba(118, 215, 200, 0.09), transparent 35%),
+    linear-gradient(135deg, rgba(216, 248, 122, 0.055), transparent 30%),
+    linear-gradient(315deg, rgba(118, 215, 200, 0.07), transparent 38%),
     rgba(255, 255, 255, 0.035);
 }
 
-.signal-node {
+.repo-feed-item {
   display: grid;
-  place-items: center;
-  aspect-ratio: 1;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  align-items: center;
   min-width: 0;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background:
-    linear-gradient(to top, rgba(216, 248, 122, 0.24) var(--impact), transparent var(--impact)),
-    rgba(10, 12, 14, 0.8);
+  padding: 0.75rem;
+  background: rgba(10, 12, 14, 0.72);
   color: var(--text);
   font: inherit;
-  font-size: 0.76rem;
-  font-weight: 900;
+  text-align: left;
   cursor: pointer;
   transition:
     transform 160ms ease,
@@ -458,20 +470,75 @@ h3 {
     background 160ms ease;
 }
 
-.signal-node:hover,
-.signal-node.is-active {
+.repo-feed-item:hover,
+.repo-feed-item.is-active {
   border-color: var(--green);
+  background: rgba(216, 248, 122, 0.08);
   transform: translateY(-2px);
 }
 
-.signal-node span {
+.repo-feed-main,
+.repo-feed-stats {
+  min-width: 0;
+}
+
+.repo-feed-main {
   display: grid;
-  width: 72%;
-  height: 72%;
-  place-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 8px;
-  background: rgba(0, 0, 0, 0.28);
+  gap: 0.25rem;
+}
+
+.repo-name {
+  overflow: hidden;
+  font-size: 0.95rem;
+  font-weight: 900;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.repo-subline {
+  color: var(--subtle);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.repo-feed-stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.45rem;
+}
+
+.repo-feed-stats span,
+.source-dot {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  min-height: 1.8rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0 0.55rem;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.source-dot-live {
+  border-color: rgba(216, 248, 122, 0.32);
+  color: var(--green);
+}
+
+.source-dot-cached {
+  border-color: rgba(118, 215, 200, 0.32);
+  color: var(--cyan);
+}
+
+.source-dot-snapshot {
+  border-color: rgba(237, 189, 112, 0.32);
+  color: var(--amber);
+}
+
+.source-dot-offline {
+  color: var(--subtle);
 }
 
 .project-inspector {
@@ -483,6 +550,35 @@ h3 {
   border-radius: 8px;
   padding: 1.25rem;
   background: rgba(0, 0, 0, 0.2);
+}
+
+.inspector-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.6rem;
+  margin: 1rem 0 0;
+}
+
+.inspector-stats div {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0.7rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.inspector-stats dt {
+  color: var(--subtle);
+  font-size: 0.74rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.inspector-stats dd {
+  margin: 0.35rem 0 0;
+  color: var(--text);
+  font-size: 0.96rem;
+  font-weight: 900;
 }
 
 .inspector-category,
@@ -586,14 +682,9 @@ h3 {
 }
 
 @media (max-width: 1024px) {
-  .profile-panel,
   .focus-strip,
-  .signal-layout {
+  .repo-console-layout {
     grid-template-columns: 1fr;
-  }
-
-  .metric-tile {
-    min-height: 10rem;
   }
 
   .category-rail {
@@ -607,12 +698,21 @@ h3 {
 
 @media (max-width: 768px) {
   .app-shell {
-    width: min(100% - 1rem, 46rem);
+    width: min(calc(100% - 1rem), 46rem);
     padding-top: 0.75rem;
   }
 
   .topbar {
     grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .topbar-status {
+    display: block;
+    justify-self: start;
+    width: 100%;
+    border-radius: 8px;
+    font-size: 0.88rem;
   }
 
   .profile-copy {
@@ -632,15 +732,31 @@ h3 {
   }
 
   .category-rail,
-  .metric-grid,
   .focus-strip ul,
   .project-grid {
     grid-template-columns: 1fr;
   }
 
-  .node-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+  .repo-feed {
     min-height: auto;
+    max-height: none;
+  }
+
+  .repo-feed-item,
+  .repo-feed-stats {
+    justify-content: stretch;
+  }
+
+  .repo-feed-item {
+    grid-template-columns: 1fr;
+  }
+
+  .repo-feed-stats {
+    justify-content: flex-start;
+  }
+
+  .inspector-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -653,11 +769,12 @@ h3 {
     min-height: 3.25rem;
   }
 
-  .node-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+  .inspector-stats {
+    grid-template-columns: 1fr;
   }
 
   .profile-actions a,
+  .refresh-button,
   .inline-link {
     width: 100%;
   }

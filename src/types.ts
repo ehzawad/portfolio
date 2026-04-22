@@ -8,11 +8,9 @@ export type CategoryId =
 
 export type ActiveCategory = CategoryId | "all";
 
-export interface Stat {
-  label: string;
-  value: string;
-  detail: string;
-}
+export type GitHubMetadataSource = "github" | "cache" | "snapshot" | "fallback";
+
+export type GitHubLoadStatus = "idle" | "loading" | "ready" | "error";
 
 export interface ProfileLink {
   label: string;
@@ -27,7 +25,6 @@ export interface Profile {
   bio: string;
   avatarUrl: string;
   links: ProfileLink[];
-  stats: Stat[];
 }
 
 export interface Category {
@@ -48,7 +45,6 @@ export interface Project {
   description: string;
   evidence: string;
   tags: string[];
-  impact: number;
 }
 
 export interface PortfolioContent {
@@ -56,4 +52,39 @@ export interface PortfolioContent {
   categories: Category[];
   projects: Project[];
   focusAreas: string[];
+}
+
+export interface GitHubProfileMetrics {
+  login: string;
+  name?: string;
+  avatarUrl: string;
+  htmlUrl: string;
+  publicRepos: number;
+  followers: number;
+  following: number;
+  updatedAt?: string;
+}
+
+export interface RepositoryMetrics {
+  repo: string;
+  fullName: string;
+  url: string;
+  description?: string;
+  language?: string;
+  stars?: number;
+  forks?: number;
+  openIssues?: number;
+  updatedAt?: string;
+  pushedAt?: string;
+  source: GitHubMetadataSource;
+}
+
+export interface GitHubPortfolioSnapshot {
+  profile?: GitHubProfileMetrics;
+  repos: Record<string, RepositoryMetrics>;
+  fetchedAt?: string;
+  source: GitHubMetadataSource;
+  warning?: string;
+  rateLimitRemaining?: number;
+  rateLimitResetAt?: string;
 }
