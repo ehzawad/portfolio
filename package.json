@@ -1,0 +1,43 @@
+{
+  "name": "portfolio",
+  "version": "1.0.0",
+  "description": "Portfolio site for AI systems, computer vision, and agent tooling work.",
+  "private": false,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc -b"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ehzawad/portfolio.git"
+  },
+  "keywords": [
+    "portfolio",
+    "ai",
+    "computer-vision",
+    "agents",
+    "rag"
+  ],
+  "author": "ehzawad",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ehzawad/portfolio/issues"
+  },
+  "homepage": "https://ehzawad.github.io/portfolio/",
+  "dependencies": {
+    "firebase": "^12.12.1",
+    "lucide-react": "^1.8.0",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.9"
+  }
+}
