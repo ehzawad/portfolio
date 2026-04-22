@@ -43,7 +43,6 @@ export interface Project {
   language: string;
   year: string;
   description: string;
-  evidence: string;
   tags: string[];
 }
 

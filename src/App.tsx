@@ -3,7 +3,6 @@ import { CategoryRail } from "./components/CategoryRail/CategoryRail";
 import { FocusStrip } from "./components/FocusStrip/FocusStrip";
 import { ProfilePanel } from "./components/ProfilePanel/ProfilePanel";
 import { ProjectGrid } from "./components/ProjectGrid/ProjectGrid";
-import { RepositoryConsole } from "./components/RepositoryConsole/RepositoryConsole";
 import { portfolioContent } from "./data/portfolio";
 import { createFallbackGitHubSnapshot, loadGitHubPortfolio } from "./services/githubPortfolio";
 import type {
@@ -12,7 +11,6 @@ import type {
   GitHubLoadStatus,
   GitHubPortfolioSnapshot,
   PortfolioContent,
-  Project,
 } from "./types";
 
 function getCategoryCounts(content: PortfolioContent): Record<CategoryId, number> {
@@ -35,7 +33,6 @@ function getCategoryCounts(content: PortfolioContent): Record<CategoryId, number
 function App() {
   const content = portfolioContent;
   const [activeCategory, setActiveCategory] = useState<ActiveCategory>("all");
-  const [selectedProject, setSelectedProject] = useState<Project>(portfolioContent.projects[0]);
   const [githubSnapshot, setGithubSnapshot] = useState<GitHubPortfolioSnapshot>(() =>
     createFallbackGitHubSnapshot(portfolioContent.projects),
   );
@@ -99,12 +96,6 @@ function App() {
     return content.projects.filter((project) => project.category === activeCategory);
   }, [activeCategory, content.projects]);
 
-  useEffect(() => {
-    if (!filteredProjects.some((project) => project.id === selectedProject.id)) {
-      setSelectedProject(filteredProjects[0] ?? content.projects[0]);
-    }
-  }, [content.projects, filteredProjects, selectedProject.id]);
-
   return (
     <>
       <a href="#main-content" className="skip-link">
@@ -115,7 +106,7 @@ function App() {
           <a className="brand-mark" href="https://github.com/ehzawad" target="_blank" rel="noreferrer">
             ehzawad
           </a>
-          <span className="topbar-status">AI Engineer / Bengali language systems / agent tooling</span>
+          <span className="topbar-status">AI Engineer · Bengali language systems · agent tooling</span>
         </header>
 
         <main id="main-content" aria-busy={githubStatus === "loading"}>
@@ -132,13 +123,6 @@ function App() {
             onCategoryChange={setActiveCategory}
           />
           <FocusStrip focusAreas={content.focusAreas} />
-          <RepositoryConsole
-            projects={filteredProjects}
-            selectedProject={selectedProject}
-            githubSnapshot={githubSnapshot}
-            githubStatus={githubStatus}
-            onSelectProject={setSelectedProject}
-          />
           <ProjectGrid
             projects={filteredProjects}
             categories={content.categories}

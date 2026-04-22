@@ -4,7 +4,7 @@ import type {
   GitHubPortfolioSnapshot,
   Profile,
 } from "../../types";
-import { formatCompactNumber, formatDateTime } from "../../utils/format";
+import { formatCompactNumber, formatRelativeDate } from "../../utils/format";
 
 interface ProfilePanelProps {
   profile: Profile;
@@ -13,24 +13,20 @@ interface ProfilePanelProps {
   onRefreshGitHub: () => void;
 }
 
-function getSourceLabel(snapshot: GitHubPortfolioSnapshot, status: GitHubLoadStatus) {
+function getStatusTone(snapshot: GitHubPortfolioSnapshot, status: GitHubLoadStatus) {
   if (status === "loading") {
-    return "Refreshing GitHub API";
+    return "Syncing GitHub";
   }
 
   if (snapshot.source === "github") {
-    return "GitHub API live";
+    return "Live from GitHub";
   }
 
   if (snapshot.source === "cache") {
-    return "Local GitHub cache";
+    return "Cached from GitHub";
   }
 
-  if (snapshot.source === "snapshot") {
-    return "Bundled GitHub snapshot";
-  }
-
-  return "Static fallback";
+  return "Snapshot";
 }
 
 export function ProfilePanel({
@@ -41,10 +37,7 @@ export function ProfilePanel({
 }: ProfilePanelProps) {
   const avatarUrl = githubSnapshot.profile?.avatarUrl ?? profile.avatarUrl;
   const repoMetrics = Object.values(githubSnapshot.repos);
-  const loadedRepoMetrics = repoMetrics.filter((repo) => repo.source !== "fallback");
-  const featuredStars = loadedRepoMetrics.reduce((total, repo) => total + (repo.stars ?? 0), 0);
-  const featuredForks = loadedRepoMetrics.reduce((total, repo) => total + (repo.forks ?? 0), 0);
-  const warning = githubSnapshot.warning;
+  const statusClass = `status-pill status-${githubStatus === "loading" ? "loading" : githubSnapshot.source}`;
 
   return (
     <section className="profile-panel" aria-labelledby="profile-title">
@@ -58,13 +51,15 @@ export function ProfilePanel({
             height="80"
           />
           <div>
-            <p className="eyebrow">AI systems portfolio</p>
+            <p className="eyebrow">Portfolio</p>
             <h1 id="profile-title">{profile.name}</h1>
           </div>
         </div>
 
         <p className="role-line">
-          {profile.role} at {profile.company}
+          <span>{profile.role}</span>
+          <span className="role-divider" aria-hidden="true">·</span>
+          <span>{profile.company}</span>
         </p>
         <p className="bio">{profile.bio}</p>
 
@@ -73,16 +68,22 @@ export function ProfilePanel({
             <MapPin aria-hidden="true" size={17} />
             {profile.location}
           </span>
-          <span role="status">{getSourceLabel(githubSnapshot, githubStatus)}</span>
-          {warning ? <span role="status">{warning}</span> : null}
-        </div>
-
-        <div className="live-summary" aria-label="Live GitHub summary">
-          <span>{formatCompactNumber(githubSnapshot.profile?.publicRepos)} public repos</span>
-          <span>{formatCompactNumber(repoMetrics.length)} featured here</span>
-          <span>{formatCompactNumber(featuredStars)} stars</span>
-          <span>{formatCompactNumber(featuredForks)} forks</span>
-          <span>Updated {formatDateTime(githubSnapshot.fetchedAt)}</span>
+          <span className={statusClass} role="status">
+            <span className="status-dot" aria-hidden="true" />
+            {getStatusTone(githubSnapshot, githubStatus)}
+          </span>
+          <span>
+            Last push {formatRelativeDate(
+              repoMetrics
+                .map((repo) => repo.pushedAt ?? repo.updatedAt)
+                .filter((value): value is string => Boolean(value))
+                .sort((a, b) => new Date(b).getTime() - new Date(a).getTime())[0],
+            )}
+          </span>
+          <span>
+            {formatCompactNumber(githubSnapshot.profile?.publicRepos)} public repos ·{" "}
+            {repoMetrics.length} featured
+          </span>
         </div>
 
         <div className="profile-actions" aria-label="Profile links">
@@ -103,7 +104,7 @@ export function ProfilePanel({
             disabled={githubStatus === "loading"}
           >
             <RefreshCw aria-hidden="true" size={18} />
-            {githubStatus === "loading" ? "Refreshing" : "Refresh GitHub"}
+            {githubStatus === "loading" ? "Syncing" : "Refresh"}
           </button>
         </div>
       </div>

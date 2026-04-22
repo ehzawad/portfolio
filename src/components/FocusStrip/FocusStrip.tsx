@@ -8,8 +8,8 @@ export function FocusStrip({ focusAreas }: FocusStripProps) {
   return (
     <section className="focus-strip" aria-labelledby="focus-title">
       <div>
-        <p className="eyebrow">Current center of gravity</p>
-        <h2 id="focus-title">LLM systems, local language AI, and agent tooling</h2>
+        <p className="eyebrow">Focus</p>
+        <h2 id="focus-title">LLM systems, Bengali language AI, and agent tooling</h2>
       </div>
       <ul>
         {focusAreas.map((area) => (
